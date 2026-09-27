@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Il fantastico al cinema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<style>
+:root{
+  --bg:#F1EFF6; --card:#FFFFFF; --ink:#23213A; --muted:#5E5A78; --line:#D9D5E6;
+  --accent:#4E3F8F; --on-accent:#FFFFFF; --glow:#E4DFF3; --focus:#B08A2E; --err:#A3322B;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#17162A; --card:#211F38; --ink:#ECEAF6; --muted:#A7A3C2; --line:#34325A;
+    --accent:#A99BE6; --on-accent:#17162A; --glow:#2B2750; --focus:#E0B94F; --err:#F08A80; }
+}
+:root[data-theme="dark"]{ --bg:#17162A; --card:#211F38; --ink:#ECEAF6; --muted:#A7A3C2; --line:#34325A;
+  --accent:#A99BE6; --on-accent:#17162A; --glow:#2B2750; --focus:#E0B94F; --err:#F08A80; }
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+body{margin:0 auto;max-width:36rem;padding:0 1.1rem 3rem;background:var(--bg);color:var(--ink);
+  font:1.02rem/1.55 "Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2,dt,.titolo-film{font-family:Literata,Georgia,"Times New Roman",serif}
+h2{font-size:1.4rem;font-weight:600;margin:1.4rem 0 .6rem}
+h2:focus{outline:none}
+p{margin:.6rem 0}
+.piccolo{font-size:.9rem;color:var(--muted)}
+.testata{display:flex;gap:.7rem;align-items:center;padding:1.2rem 0 .2rem;color:var(--muted);font-size:.95rem}
+.testata svg{flex:none;color:var(--accent)}
+.testata b{font-family:Literata,Georgia,serif;font-weight:600;color:var(--ink);font-size:1.05rem}
+ul.prototipi{margin:.4rem 0 1rem;padding-left:1.2rem}
+ul.prototipi li{font-family:Literata,Georgia,serif}
+.avanzamento{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.3rem;font-size:.9rem;color:var(--muted);margin-top:1rem}
+.barra{flex-basis:100%;display:block;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.barra-piena{display:block;height:100%;background:var(--accent)}
+.scheda{animation:entra .16s ease-out}
+@keyframes entra{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.porta{margin:1.4rem auto 1.1rem;max-width:21rem;min-height:13rem;padding:3.4rem 1.4rem 1.5rem;text-align:center;
+  background:var(--card);border:2px solid var(--accent);border-radius:10.5rem 10.5rem .7rem .7rem;
+  box-shadow:inset 0 0 0 7px var(--glow);display:flex;flex-direction:column;justify-content:flex-end}
+.titolo-film{font-size:1.6rem;font-weight:600;line-height:1.2;margin:0}
+.porta .meta{margin:.45rem 0 0;color:var(--muted);font-size:.92rem}
+.porta .verdetto{margin:.6rem 0 0;font-size:.92rem}
+.lingue{display:grid;gap:.6rem;max-width:21rem;margin:1.5rem auto 0}
+.domanda{max-width:21rem;margin:0 auto .6rem;font-weight:700;text-align:center}
+.bottoni{display:grid;gap:.55rem;max-width:21rem;margin:0 auto}
+button{font:inherit;cursor:pointer}
+.scelta{padding:.85rem 1rem;border:1px solid var(--line);border-radius:.6rem;background:var(--card);color:var(--ink);font-size:1.02rem}
+.scelta:hover{border-color:var(--accent)}
+.scelta[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.sotto{max-width:21rem;margin:1.1rem auto 0;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.link{background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;font-size:.92rem}
+details{font-size:.92rem;text-align:right}
+details[open]{text-align:left}
+summary{cursor:pointer;color:var(--accent)}
+.primario{background:var(--accent);color:var(--on-accent);border:0;border-radius:.6rem;padding:.85rem 1.3rem;font-weight:700}
+.secondario{background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:.6rem;padding:.8rem 1.2rem}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,summary:focus-visible,textarea:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.azioni{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.1rem}
+.criteri{border-left:3px solid var(--accent);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.criteri dt{font-weight:600;margin-top:.8rem}
+.criteri dd{margin:.2rem 0 0}
+.criteri .es{display:block;margin-top:.2rem;font-size:.9rem;color:var(--muted)}
+textarea{width:100%;min-height:6rem;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:.5rem;padding:.6rem;resize:vertical}
+.errore{color:var(--err);font-weight:700}
+@media (prefers-reduced-motion: reduce){.scheda{animation:none}}
+</style>
+</head>
+<body>
+<header class="testata">
+  <svg width="26" height="34" viewBox="0 0 44 56" aria-hidden="true">
+    <path d="M12 54V24a10 10 0 0 1 20 0v30z" fill="var(--glow)"/>
+    <path d="M4 54V22a18 18 0 0 1 36 0v32M1 54h42" fill="none" stroke="currentColor" stroke-width="3"/>
+  </svg>
+  <span><b id="tit">Il fantastico al cinema</b><br><span id="sottotit">Fantasy at the movies</span></span>
+</header>
+<main id="app"></main>
+<script>
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwuYNt6POmmcJ17uHah6UrfF24aFA7DV2bbZ_cvmIo3OAOk4sqDCSRYhY8duMqgivnG/exec";
+const FILM = [{"k": "F01", "it": "Aladdin", "en": "Aladdin", "y": 1992, "a": 1}, {"k": "F02", "it": "Anastasia", "en": "Anastasia", "y": 1997, "a": 1}, {"k": "F03", "it": "Animali fantastici e dove trovarli", "en": "Fantastic Beasts and Where to Find Them", "y": 2016, "a": 0}, {"k": "F04", "it": "Avatar", "en": "Avatar", "y": 2009, "a": 0}, {"k": "F05", "it": "Coco", "en": "Coco", "y": 2017, "a": 1}, {"k": "F06", "it": "Conan il barbaro", "en": "Conan the Barbarian", "y": 1982, "a": 0}, {"k": "F07", "it": "Dragon Trainer", "en": "How to Train Your Dragon", "y": 2010, "a": 1}, {"k": "F08", "it": "E.T. l'extra-terrestre", "en": "E.T. the Extra-Terrestrial", "y": 1982, "a": 0}, {"k": "F09", "it": "Encanto", "en": "Encanto", "y": 2021, "a": 1}, {"k": "F10", "it": "Excalibur", "en": "Excalibur", "y": 1981, "a": 0}, {"k": "F11", "it": "Ghostbusters – Acchiappafantasmi", "en": "Ghostbusters", "y": 1984, "a": 0}, {"k": "F12", "it": "Gli Aristogatti", "en": "The Aristocats", "y": 1970, "a": 1}, {"k": "F13", "it": "Gremlins", "en": "Gremlins", "y": 1984, "a": 0}, {"k": "F14", "it": "Guerre stellari", "en": "Star Wars", "y": 1977, "a": 0}, {"k": "F15", "it": "Hercules", "en": "Hercules", "y": 1997, "a": 1}, {"k": "F16", "it": "Hugo Cabret", "en": "Hugo", "y": 2011, "a": 0}, {"k": "F17", "it": "I Goonies", "en": "The Goonies", "y": 1985, "a": 0}, {"k": "F18", "it": "Il gigante di ferro", "en": "The Iron Giant", "y": 1999, "a": 1}, {"k": "F19", "it": "Il labirinto del fauno", "en": "Pan's Labyrinth", "y": 2006, "a": 0}, {"k": "F20", "it": "Il pianeta del tesoro", "en": "Treasure Planet", "y": 2002, "a": 1}, {"k": "F21", "it": "Il re leone", "en": "The Lion King", "y": 1994, "a": 1}, {"k": "F22", "it": "Inside Out", "en": "Inside Out", "y": 2015, "a": 1}, {"k": "F23", "it": "Jumanji", "en": "Jumanji", "y": 1995, "a": 0}, {"k": "F24", "it": "La famiglia Addams", "en": "The Addams Family", "y": 1991, "a": 0}, {"k": "F25", "it": "La mummia", "en": "The Mummy", "y": 1999, "a": 0}, {"k": "F26", "it": "La sirenetta", "en": "The Little Mermaid", "y": 1989, "a": 1}, {"k": "F27", "it": "La storia fantastica", "en": "The Princess Bride", "y": 1987, "a": 0}, {"k": "F28", "it": "Ladyhawke", "en": "Ladyhawke", "y": 1985, "a": 0}, {"k": "F29", "it": "Le avventure del barone di Munchausen", "en": "The Adventures of Baron Munchausen", "y": 1988, "a": 0}, {"k": "F30", "it": "Luca", "en": "Luca", "y": 2021, "a": 1}, {"k": "F31", "it": "Maleficent", "en": "Maleficent", "y": 2014, "a": 0}, {"k": "F32", "it": "Matilda 6 mitica", "en": "Matilda", "y": 1996, "a": 0}, {"k": "F33", "it": "Monsters & Co.", "en": "Monsters, Inc.", "y": 2001, "a": 1}, {"k": "F34", "it": "Monty Python e il Sacro Graal", "en": "Monty Python and the Holy Grail", "y": 1975, "a": 0}, {"k": "F35", "it": "Mulan", "en": "Mulan", "y": 1998, "a": 1}, {"k": "F36", "it": "Nightmare Before Christmas", "en": "The Nightmare Before Christmas", "y": 1993, "a": 1}, {"k": "F37", "it": "Parnassus – L'uomo che voleva ingannare il diavolo", "en": "The Imaginarium of Doctor Parnassus", "y": 2009, "a": 0}, {"k": "F38", "it": "Pinocchio di Guillermo del Toro", "en": "Guillermo del Toro's Pinocchio", "y": 2022, "a": 1}, {"k": "F39", "it": "Pinocchio di Roberto Benigni", "en": "Pinocchio (Roberto Benigni)", "y": 2002, "a": 0}, {"k": "F40", "it": "Pocahontas", "en": "Pocahontas", "y": 1995, "a": 1}, {"k": "F41", "it": "Pom Poko", "en": "Pom Poko", "y": 1994, "a": 1}, {"k": "F42", "it": "Rapunzel – L'intreccio della torre", "en": "Tangled", "y": 2010, "a": 1}, {"k": "F43", "it": "Ritorno a Oz (Nel fantastico mondo di Oz)", "en": "Return to Oz", "y": 1985, "a": 0}, {"k": "F44", "it": "Shrek", "en": "Shrek", "y": 2001, "a": 1}, {"k": "F45", "it": "Suzume", "en": "Suzume", "y": 2022, "a": 1}, {"k": "F46", "it": "The Fall", "en": "The Fall", "y": 2006, "a": 0}, {"k": "F47", "it": "Tremila anni di attesa", "en": "Three Thousand Years of Longing", "y": 2022, "a": 0}, {"k": "F48", "it": "WALL•E", "en": "WALL-E", "y": 2008, "a": 1}, {"k": "F49", "it": "Willow", "en": "Willow", "y": 1988, "a": 0}, {"k": "F50", "it": "Your Name.", "en": "Your Name.", "y": 2016, "a": 1}, {"k": "X1", "it": "Titanic", "en": "Titanic", "y": 1997, "a": 0, "c": 1}, {"k": "X2", "it": "Fast & Furious", "en": "The Fast and the Furious", "y": 2001, "a": 0, "c": 1}];
+const T = {
+ it: {
+  titolo:"Il fantastico al cinema", sottotitolo:"Un questionario anonimo",
+  animazione:"animazione", live:"live action",
+  v1:["Sì","No","Caso di confine","Non l'ho visto"], v2:["Sì","No","Caso di confine"],
+  motivi:["C1 Mondo realistico","C2 Aspetto moderno o fantascientifico","C3 Tono non sincero","C4 Meraviglia non centrale"],
+  giaT:"Hai già risposto", giaP:"Risulta che hai già inviato le risposte da questo dispositivo. Grazie per il contributo!",
+  introT:"Prima di cominciare",
+  intro1:"È una ricerca sul cinema fantastico. Ti mostrerò una cinquantina di film, uno alla volta, in due parti; ci vogliono 10-15 minuti.",
+  intro2:"Nella prima parte segui il tuo intuito. Nella seconda ti darò una definizione precisa da applicare. Non ci sono risposte giuste o sbagliate, e i film che non hai visto li salti.",
+  intro3:"Non raccolgo dati personali: solo le risposte e il tempo impiegato.", inizia:"Inizia",
+  f1T:"Prima parte: a intuito",
+  f1descr:"Sto studiando un filone del cinema fantastico che chiamo «fantasy cinematografico positivo»: film che mettono in scena un mondo meraviglioso e liberamente inventato, in cui si vorrebbe entrare, anche se non è privo di conflitti o di pericoli.",
+  f1es:"Otto esempi tipici:",
+  prototipi:["Il Signore degli Anelli","Labyrinth","Nel paese delle creature selvagge","La storia infinita","Dragonheart","Le cronache di Narnia","Nausicaä della Valle del vento","La città incantata"],
+  f1istr:"Per ogni film scegli se appartiene alla stessa famiglia degli esempi. Usa «Caso di confine» solo se sei davvero in dubbio, e «Non l'ho visto» se non lo conosci abbastanza. Valuta l'appartenenza, non la qualità del film.",
+  comincia:"Comincia", parte1:"Prima parte", parte2:"Seconda parte", film:"Film", di:"di",
+  indietro:"Indietro", rivediEs:"Rivedi gli esempi",
+  fine1T:"Prima parte finita", fine1P:"Dopo questo passaggio non potrai più cambiare le risposte della prima parte.",
+  tornaUltimo:"Torna all'ultimo film", vaiF2:"Vai alla seconda parte",
+  f2T:"Seconda parte: con una definizione",
+  f2intro:"Ora ti mostro solo i film che hai visto, in un ordine diverso, da valutare applicando la definizione qui sotto. Se cambi idea rispetto alla prima parte va benissimo: non cercare di essere coerente.",
+  f2nessuno:"Non hai visto nessuno dei film dell'elenco, quindi questa parte non ti riguarda.",
+  f2regole:"Applica i criteri così come sono scritti, anche quando il tuo gusto direbbe altro: la tua opinione libera l'hai già data. Prima di dare un Sì, controlla che il film soddisfi tutti e quattro i criteri; se ne manca anche uno solo, il verdetto è No, oppure Caso di confine se il criterio è soddisfatto solo in parte.",
+  f2motivo:"Se il verdetto è No o Caso di confine, ti chiederò quale criterio più di tutti tiene fuori il film. Puoi rivedere i criteri in ogni momento.",
+  iniziaF2:"Inizia la seconda parte", vaiInvio:"Vai all'invio",
+  criteriIntro:"Un film è fantasy cinematografico positivo se soddisfa tutti e quattro questi criteri:",
+  criteri:[
+   ["C1 Un mondo altro","Il film porta lo spettatore fuori dalla realtà quotidiana: in un mondo secondario o leggendario, in un altrove in cui si entra e che domina il film, oppure in una dimensione nascosta del nostro mondo popolata da creature del folklore. Non basta un elemento magico in un'ambientazione realistica, passata o presente.","Sì: Eragon, Polar Express, Il mio vicino Totoro. No: Mary Poppins, Una notte al museo."],
+   ["C2 Un meraviglioso arcaico o naturale","Luoghi, creature, oggetti e poteri meravigliosi hanno un aspetto arcaico, fiabesco o naturale: castelli, draghi, spiriti, velieri, foreste, e anche macchine a vapore e ingranaggi. È escluso il meraviglioso tecnologico o fantascientifico: alieni, astronavi, robot, città moderne o futuristiche, anche se inventate.","Sì: Il castello errante di Howl, Principessa Mononoke. No: Dune, Zootropolis."],
+   ["C3 Tono sincero","Niente horror o angoscia, niente parodia del genere, niente commedia d'azione ironica. La comicità dentro il mondo va bene.","Sì: La spada nella roccia. No: Coraline, Kung Fu Panda."],
+   ["C4 La meraviglia al centro","Il fantastico è il cuore della storia, non un pretesto per un altro genere. Sono esclusi i film in cui serve soprattutto a una storia d'amore nel mondo reale (per esempio una creatura o un aldilà che fa incontrare o ricongiungere due persone), a una vendetta brutale, a un messaggio o a un'allegoria, oppure a un'avventura d'azione in un mondo realistico. Una storia d'amore dentro un mondo fiabesco va benissimo.","Sì: Dark Crystal, Stardust. No: La forma dell'acqua, Pirati dei Caraibi, Soul."]],
+  noncontano:"Non contano: la presenza del soprannaturale, il lieto fine, i toni cupi, le riscritture di storie note, la qualità del film.",
+  domanda:"Cosa lo esclude?", cambia:"Cambia verdetto", tuoVerdetto:"Il tuo verdetto: ", rivediCr:"Rivedi i criteri",
+  finaleT:"Ultimo passo", nota:"Se vuoi, lascia un commento: dubbi, film difficili, criteri che non ti convincono.",
+  invia:"Invia le risposte", invio:"Invio in corso",
+  errore:"Invio non riuscito. Controlla la connessione e premi di nuovo «Invia le risposte»: le tue risposte sono ancora qui.",
+  grazieT:"Risposte inviate", grazieP:"Grazie! Le tue risposte aiutano a capire se questa famiglia di film è riconoscibile anche da altri, e se i criteri che la descrivono funzionano.",
+  anteprima:"Questa è un'anteprima: le risposte non sono state salvate da nessuna parte."
+ },
+ en: {
+  titolo:"Fantasy at the movies", sottotitolo:"An anonymous survey",
+  animazione:"animation", live:"live action",
+  v1:["Yes","No","Borderline","Haven't seen it"], v2:["Yes","No","Borderline"],
+  motivi:["C1 Realistic world","C2 Modern or sci-fi look","C3 Insincere tone","C4 Wonder not central"],
+  giaT:"You've already answered", giaP:"It looks like you've already sent your answers from this device. Thanks for taking part!",
+  introT:"Before you start",
+  intro1:"This is a research project on fantasy cinema. I'll show you about fifty films, one at a time, in two parts; it takes 10-15 minutes.",
+  intro2:"In the first part, follow your intuition. In the second, I'll give you a precise definition to apply. There are no right or wrong answers, and you can skip the films you haven't seen.",
+  intro3:"I don't collect any personal data: only your answers and the time taken.", inizia:"Start",
+  f1T:"Part one: by intuition",
+  f1descr:"I'm studying a strand of fantasy cinema that I call “positive fantasy film”: films that depict a wondrous, freely invented world, one you would want to step into, even though it is not free of conflict or danger.",
+  f1es:"Eight typical examples:",
+  prototipi:["The Lord of the Rings","Labyrinth","Where the Wild Things Are","The NeverEnding Story","Dragonheart","The Chronicles of Narnia","Nausicaä of the Valley of the Wind","Spirited Away"],
+  f1istr:"For each film, choose whether it belongs to the same family as the examples. Use “Borderline” only if you're truly unsure, and “Haven't seen it” if you don't know the film well enough. Judge whether it belongs, not how good the film is.",
+  comincia:"Begin", parte1:"Part one", parte2:"Part two", film:"Film", di:"of",
+  indietro:"Back", rivediEs:"See the examples again",
+  fine1T:"Part one complete", fine1P:"After this step you won't be able to change your answers to part one.",
+  tornaUltimo:"Back to the last film", vaiF2:"Go to part two",
+  f2T:"Part two: with a definition",
+  f2intro:"Now I'll show you only the films you've seen, in a different order, to be judged by applying the definition below. It's perfectly fine to change your mind from part one: don't try to be consistent.",
+  f2nessuno:"You haven't seen any of the films on the list, so this part doesn't apply to you.",
+  f2regole:"Apply the criteria as written, even when your own taste would say otherwise: you've already given your free opinion. Before answering Yes, check that the film meets all four criteria; if even one is missing, the answer is No, or Borderline if a criterion is only partly met.",
+  f2motivo:"If your answer is No or Borderline, I'll ask which criterion most keeps the film out. You can review the criteria at any time.",
+  iniziaF2:"Start part two", vaiInvio:"Continue",
+  criteriIntro:"A film is a positive fantasy film if it meets all four of these criteria:",
+  criteri:[
+   ["C1 Another world","The film takes the viewer out of everyday reality: into a secondary or legendary world, into an elsewhere that one enters and that dominates the film, or into a hidden dimension of our world inhabited by folkloric creatures. A magical element in a realistic setting, past or present, is not enough.","Yes: Eragon, The Polar Express, My Neighbor Totoro. No: Mary Poppins, Night at the Museum."],
+   ["C2 An archaic or natural kind of wonder","Wondrous places, creatures, objects and powers look archaic, fairy-tale-like or natural: castles, dragons, spirits, sailing ships, forests, and also steam engines and clockwork. Technological or science-fiction wonders are excluded: aliens, spaceships, robots, modern or futuristic cities, even invented ones.","Yes: Howl's Moving Castle, Princess Mononoke. No: Dune, Zootopia."],
+   ["C3 A sincere tone","No horror or dread, no parody of the genre, no ironic action comedy. Humour within the world is fine.","Yes: The Sword in the Stone. No: Coraline, Kung Fu Panda."],
+   ["C4 Wonder at the centre","The fantastic is the heart of the story, not a pretext for another genre. Excluded are films in which it mainly serves a love story set in the real world (for example a creature or an afterlife that brings two people together or reunites them), a brutal revenge, a message or an allegory, or an action adventure in a realistic world. A love story inside a fairy-tale world is perfectly fine.","Yes: The Dark Crystal, Stardust. No: The Shape of Water, Pirates of the Caribbean, Soul."]],
+  noncontano:"Not relevant: the presence of the supernatural, a happy ending, dark tones, retellings of known stories, the quality of the film.",
+  domanda:"What excludes it?", cambia:"Change answer", tuoVerdetto:"Your answer: ", rivediCr:"See the criteria again",
+  finaleT:"Last step", nota:"If you like, leave a comment: doubts, difficult films, criteria that don't convince you.",
+  invia:"Send your answers", invio:"Sending",
+  errore:"Sending failed. Check your connection and press “Send your answers” again: your answers are still here.",
+  grazieT:"Answers sent", grazieP:"Thank you! Your answers help us understand whether this family of films is recognisable to others, and whether the criteria that describe it work.",
+  anteprima:"This is a preview: your answers have not been saved anywhere."
+ }
+};
+const COD1 = ["si","no","confine","non_visto"], COD2 = ["si","no","confine"], CODM = ["C1","C2","C3","C4"];
+const CHIAVE = "fantastico_cinema_inviato_v1";
+const app = document.getElementById("app");
+let L = "it", X = T.it;
+const S = {inizio:0, fine1:0, r1:{}, r2:{}, mot:{}, nota:"", ord1:[], ord2:[], i1:0, i2:0, blocco:false, invio:false};
+
+function h(tag, props, ...kids){
+  const e = document.createElement(tag);
+  for (const [k,v] of Object.entries(props || {})){
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (v === true) e.setAttribute(k, "");
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat()){ if (c == null || c === false) continue; e.append(c.nodeType ? c : document.createTextNode(c)); }
+  return e;
+}
+function mescola(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function vai(nodo){ S.blocco = false; nodo.classList.add("scheda"); app.replaceChildren(nodo); window.scrollTo(0,0);
+  const t = app.querySelector("h2"); if (t){ t.setAttribute("tabindex","-1"); t.focus({preventScroll:true}); } }
+function giaInviato(){ try { return localStorage.getItem(CHIAVE) === "1"; } catch(e){ return false; } }
+function lento(){ return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+function scegli(btn, azione){
+  if (S.blocco) return; S.blocco = true;
+  btn.parentElement.querySelectorAll(".scelta").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+  setTimeout(azione, lento() ? 0 : 180);
+}
+function titolo(f){ return f[L]; }
+function progresso(nome, n, t){
+  return h("div", {class:"avanzamento"}, h("span", {}, nome), h("span", {}, X.film + " " + n + " " + X.di + " " + t),
+    h("span", {class:"barra"}, h("span", {class:"barra-piena", style:"width:" + (100 * (n - 1) / t) + "%"})));
+}
+function porta(f, extra){
+  return h("div", {class:"porta"}, h("h2", {class:"titolo-film"}, titolo(f)),
+    h("p", {class:"meta"}, f.y + ", " + (f.a ? X.animazione : X.live)),
+    extra ? h("p", {class:"verdetto"}, extra) : null);
+}
+function criteriEl(){
+  return h("div", {class:"criteri"}, h("p", {}, X.criteriIntro),
+    h("dl", {}, X.criteri.map(c => [h("dt", {}, c[0]), h("dd", {}, c[1], h("span", {class:"es"}, c[2]))])),
+    h("p", {class:"piccolo"}, X.noncontano));
+}
+
+function lingua(){
+  if (giaInviato()){
+    return vai(h("section", {}, h("h2", {}, T.it.giaT + " / " + T.en.giaT), h("p", {}, T.it.giaP), h("p", {lang:"en"}, T.en.giaP)));
+  }
+  vai(h("section", {},
+    h("h2", {}, "Scegli la lingua / Choose your language"),
+    h("div", {class:"lingue"},
+      h("button", {type:"button", class:"primario", lang:"it", onclick:() => imposta("it")}, "Italiano"),
+      h("button", {type:"button", class:"primario", lang:"en", onclick:() => imposta("en")}, "English"))));
+}
+function imposta(l){
+  L = l; X = T[l]; document.documentElement.lang = l;
+  document.getElementById("tit").textContent = X.titolo; document.getElementById("sottotit").textContent = X.sottotitolo;
+  intro();
+}
+function intro(){
+  vai(h("section", {}, h("h2", {}, X.introT), h("p", {}, X.intro1), h("p", {}, X.intro2), h("p", {class:"piccolo"}, X.intro3),
+    h("div", {class:"azioni"}, h("button", {class:"primario", type:"button", onclick:() => {
+      S.inizio = Date.now(); S.ord1 = mescola(FILM.map((_, i) => i)); introFase1(); }}, X.inizia))));
+}
+function introFase1(){
+  vai(h("section", {}, h("h2", {}, X.f1T), h("p", {}, X.f1descr), h("p", {}, X.f1es),
+    h("ul", {class:"prototipi"}, X.prototipi.map(p => h("li", {}, p))), h("p", {}, X.f1istr),
+    h("div", {class:"azioni"}, h("button", {class:"primario", type:"button", onclick:() => { S.i1 = 0; carta1(); }}, X.comincia))));
+}
+function carta1(){
+  const t = S.ord1.length;
+  if (S.i1 >= t) return fine1();
+  const i = S.ord1[S.i1], f = FILM[i];
+  vai(h("section", {}, progresso(X.parte1, S.i1 + 1, t), porta(f),
+    h("div", {class:"bottoni"}, X.v1.map((v, k) => h("button", {type:"button", class:"scelta", "aria-pressed": S.r1[i] === COD1[k] ? "true" : "false",
+      onclick:e => { S.r1[i] = COD1[k]; scegli(e.currentTarget, () => { S.i1++; carta1(); }); }}, v))),
+    h("div", {class:"sotto"},
+      S.i1 > 0 ? h("button", {type:"button", class:"link", onclick:() => { S.i1--; carta1(); }}, X.indietro) : h("span", {}),
+      h("details", {}, h("summary", {}, X.rivediEs), h("p", {class:"piccolo"}, X.prototipi.join(", ") + ".")))));
+}
+function fine1(){
+  vai(h("section", {}, h("h2", {}, X.fine1T), h("p", {}, X.fine1P),
+    h("div", {class:"azioni"},
+      h("button", {type:"button", class:"secondario", onclick:() => { S.i1 = S.ord1.length - 1; carta1(); }}, X.tornaUltimo),
+      h("button", {type:"button", class:"primario", onclick:avviaFase2}, X.vaiF2))));
+}
+function avviaFase2(){
+  S.fine1 = Date.now();
+  S.ord2 = mescola(FILM.map((_, i) => i).filter(i => !FILM[i].c && S.r1[i] !== "non_visto"));
+  S.i2 = 0;
+  const ci = S.ord2.length > 0;
+  vai(h("section", {}, h("h2", {}, X.f2T), h("p", {}, ci ? X.f2intro : X.f2nessuno),
+    ci ? [h("p", {}, X.f2regole), criteriEl(), h("p", {}, X.f2motivo)] : null,
+    h("div", {class:"azioni"}, h("button", {class:"primario", type:"button", onclick:() => ci ? carta2() : finale()}, ci ? X.iniziaF2 : X.vaiInvio))));
+}
+function carta2(passo){
+  const t = S.ord2.length;
+  if (S.i2 >= t) return finale();
+  const i = S.ord2[S.i2], f = FILM[i], motivo = passo === "motivo";
+  const area = motivo
+    ? [h("p", {class:"domanda"}, X.domanda),
+       h("div", {class:"bottoni"}, X.motivi.map((m, k) => h("button", {type:"button", class:"scelta", "aria-pressed": S.mot[i] === CODM[k] ? "true" : "false",
+         onclick:e => { S.mot[i] = CODM[k]; scegli(e.currentTarget, () => { S.i2++; carta2(); }); }}, m)))]
+    : h("div", {class:"bottoni"}, X.v2.map((v, k) => h("button", {type:"button", class:"scelta", "aria-pressed": S.r2[i] === COD2[k] ? "true" : "false",
+         onclick:e => { S.r2[i] = COD2[k]; if (k === 0) delete S.mot[i];
+           scegli(e.currentTarget, () => { if (k === 0){ S.i2++; carta2(); } else carta2("motivo"); }); }}, v)));
+  const indietro = motivo
+    ? h("button", {type:"button", class:"link", onclick:() => carta2()}, X.cambia)
+    : (S.i2 > 0 ? h("button", {type:"button", class:"link", onclick:() => { S.i2--; carta2(); }}, X.indietro) : h("span", {}));
+  vai(h("section", {}, progresso(X.parte2, S.i2 + 1, t),
+    porta(f, motivo ? X.tuoVerdetto + X.v2[COD2.indexOf(S.r2[i])] : null), area,
+    h("div", {class:"sotto"}, indietro, h("details", {}, h("summary", {}, X.rivediCr), criteriEl()))));
+}
+let btnInvia, errore;
+function finale(){
+  const nota = h("textarea", {id:"nota", maxlength:"2000"});
+  nota.value = S.nota; nota.addEventListener("input", () => { S.nota = nota.value; });
+  errore = h("p", {class:"errore", role:"alert"});
+  btnInvia = h("button", {class:"primario", type:"button", onclick:invia}, X.invia);
+  vai(h("section", {}, h("h2", {}, X.finaleT), h("p", {}, h("label", {for:"nota"}, X.nota)), nota,
+    h("div", {class:"azioni"},
+      S.ord2.length ? h("button", {type:"button", class:"secondario", onclick:() => { S.i2 = S.ord2.length - 1; carta2(); }}, X.tornaUltimo) : null,
+      btnInvia), errore));
+}
+function invia(){
+  if (S.invio) return;
+  const risposte = FILM.map((f, i) => ({k:f.k, titolo:f.it, anno:f.y, controllo:!!f.c, fase1:S.r1[i] || "",
+    fase2:S.r2[i] || "", motivo:S.mot[i] || "", pos1:S.ord1.indexOf(i) + 1, pos2:(S.ord2.indexOf(i) + 1) || ""}));
+  const dati = {lingua:L, risposte:risposte, nota:S.nota, durata:Math.round((Date.now() - S.inizio) / 1000),
+    durataFase1:Math.round((S.fine1 - S.inizio) / 1000)};
+  if (!URL_SCRIPT) return grazie(true);
+  S.invio = true; btnInvia.disabled = true; btnInvia.textContent = X.invio; errore.textContent = "";
+  fetch(URL_SCRIPT, {method:"POST", body:JSON.stringify(dati), credentials:"omit"})
+    .then(res => res.text().then(testo => {
+      let ok = res.ok;
+      try { ok = JSON.parse(testo).ok === true; } catch(e){}
+      if (!ok) throw new Error("invio");
+    }))
+    .then(() => { try { localStorage.setItem(CHIAVE, "1"); } catch(e){} grazie(false); })
+    .catch(() => { S.invio = false; btnInvia.disabled = false; btnInvia.textContent = X.invia; errore.textContent = X.errore; });
+}
+function grazie(anteprima){
+  vai(h("section", {}, h("h2", {}, X.grazieT), h("p", {}, X.grazieP), anteprima ? h("p", {class:"piccolo"}, X.anteprima) : null));
+}
+lingua();
+</script>
+</body>
+</html>
