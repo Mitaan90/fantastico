@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Il fantastico al cinema: valutazione con i criteri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<style>
+:root{
+  --bg:#F1EFF6; --card:#FFFFFF; --ink:#23213A; --muted:#5E5A78; --line:#D9D5E6;
+  --accent:#4E3F8F; --on-accent:#FFFFFF; --glow:#E4DFF3; --focus:#B08A2E; --err:#A3322B;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#17162A; --card:#211F38; --ink:#ECEAF6; --muted:#A7A3C2; --line:#34325A;
+    --accent:#A99BE6; --on-accent:#17162A; --glow:#2B2750; --focus:#E0B94F; --err:#F08A80; }
+}
+:root[data-theme="dark"]{ --bg:#17162A; --card:#211F38; --ink:#ECEAF6; --muted:#A7A3C2; --line:#34325A;
+  --accent:#A99BE6; --on-accent:#17162A; --glow:#2B2750; --focus:#E0B94F; --err:#F08A80; }
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+body{margin:0 auto;max-width:36rem;padding:0 1.1rem 3rem;background:var(--bg);color:var(--ink);
+  font:1.02rem/1.55 "Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2,dt,.titolo-film{font-family:Literata,Georgia,"Times New Roman",serif}
+h2{font-size:1.4rem;font-weight:600;margin:1.4rem 0 .6rem}
+h2:focus{outline:none}
+p{margin:.6rem 0}
+.piccolo{font-size:.9rem;color:var(--muted)}
+.testata{display:flex;gap:.7rem;align-items:center;padding:1.2rem 0 .2rem;color:var(--muted);font-size:.95rem}
+.testata svg{flex:none;color:var(--accent)}
+.testata b{font-family:Literata,Georgia,serif;font-weight:600;color:var(--ink);font-size:1.05rem}
+ul.prototipi{margin:.4rem 0 1rem;padding-left:1.2rem}
+ul.prototipi li{font-family:Literata,Georgia,serif}
+.avanzamento{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.3rem;font-size:.9rem;color:var(--muted);margin-top:1rem}
+.barra{flex-basis:100%;display:block;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.barra-piena{display:block;height:100%;background:var(--accent)}
+.scheda{animation:entra .16s ease-out}
+@keyframes entra{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.porta{margin:1.4rem auto 1.1rem;max-width:21rem;min-height:13rem;padding:3.4rem 1.4rem 1.5rem;text-align:center;
+  background:var(--card);border:2px solid var(--accent);border-radius:10.5rem 10.5rem .7rem .7rem;
+  box-shadow:inset 0 0 0 7px var(--glow);display:flex;flex-direction:column;justify-content:flex-end}
+.titolo-film{font-size:1.6rem;font-weight:600;line-height:1.2;margin:0}
+.porta .meta{margin:.45rem 0 0;color:var(--muted);font-size:.92rem}
+.porta .verdetto{margin:.6rem 0 0;font-size:.92rem}
+.domanda{max-width:21rem;margin:0 auto .6rem;font-weight:700;text-align:center}
+.bottoni{display:grid;gap:.55rem;max-width:21rem;margin:0 auto}
+button{font:inherit;cursor:pointer}
+.scelta{padding:.85rem 1rem;border:1px solid var(--line);border-radius:.6rem;background:var(--card);color:var(--ink);font-size:1.02rem}
+.scelta:hover{border-color:var(--accent)}
+.scelta[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.sotto{max-width:21rem;margin:1.1rem auto 0;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.link{background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;font-size:.92rem}
+details{font-size:.92rem;text-align:right}
+details[open]{text-align:left}
+summary{cursor:pointer;color:var(--accent)}
+.primario{background:var(--accent);color:var(--on-accent);border:0;border-radius:.6rem;padding:.85rem 1.3rem;font-weight:700}
+.secondario{background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:.6rem;padding:.8rem 1.2rem}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,summary:focus-visible,textarea:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.azioni{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.1rem}
+.criteri{border-left:3px solid var(--accent);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.esempi{width:100%;border-collapse:collapse;font-size:.88rem;margin:.6rem 0}.esempi th,.esempi td{border-top:1px solid var(--line);padding:.35rem .4rem;text-align:left;vertical-align:top}.esempi th{color:var(--muted);font-weight:700}
+input[type=text]{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:.5rem;padding:.6rem}
+.criteri dt{font-weight:600;margin-top:.8rem}
+.criteri dd{margin:.2rem 0 0}
+.criteri .es{display:block;margin-top:.2rem;font-size:.9rem;color:var(--muted)}
+textarea{width:100%;min-height:6rem;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:.5rem;padding:.6rem;resize:vertical}
+.errore{color:var(--err);font-weight:700}
+@media (prefers-reduced-motion: reduce){.scheda{animation:none}}
+</style>
+</head>
+<body>
+<header class="testata">
+  <svg width="26" height="34" viewBox="0 0 44 56" aria-hidden="true">
+    <path d="M12 54V24a10 10 0 0 1 20 0v30z" fill="var(--glow)"/>
+    <path d="M4 54V22a18 18 0 0 1 36 0v32M1 54h42" fill="none" stroke="currentColor" stroke-width="3"/>
+  </svg>
+  <span><b>Il fantastico al cinema</b><br>Valutazione con i criteri</span>
+</header>
+<main id="app"></main>
+<script>
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzqEzjGx_m6Ue9h_75g-hZDrBOok0wg5MG1AtXyl6IEHRatw2fp_hpgBk32BpmwmWPN/exec";
+const FILM = [{"k": "F01", "it": "Aladdin", "en": "Aladdin", "y": 1992, "a": 1}, {"k": "F02", "it": "Anastasia", "en": "Anastasia", "y": 1997, "a": 1}, {"k": "F03", "it": "Animali fantastici e dove trovarli", "en": "Fantastic Beasts and Where to Find Them", "y": 2016, "a": 0}, {"k": "F04", "it": "Avatar", "en": "Avatar", "y": 2009, "a": 0}, {"k": "F05", "it": "Coco", "en": "Coco", "y": 2017, "a": 1}, {"k": "F06", "it": "Conan il barbaro", "en": "Conan the Barbarian", "y": 1982, "a": 0}, {"k": "F07", "it": "Dragon Trainer", "en": "How to Train Your Dragon", "y": 2010, "a": 1}, {"k": "F08", "it": "E.T. l'extra-terrestre", "en": "E.T. the Extra-Terrestrial", "y": 1982, "a": 0}, {"k": "F09", "it": "Encanto", "en": "Encanto", "y": 2021, "a": 1}, {"k": "F10", "it": "Excalibur", "en": "Excalibur", "y": 1981, "a": 0}, {"k": "F11", "it": "Ghostbusters – Acchiappafantasmi", "en": "Ghostbusters", "y": 1984, "a": 0}, {"k": "F12", "it": "Gli Aristogatti", "en": "The Aristocats", "y": 1970, "a": 1}, {"k": "F13", "it": "Gremlins", "en": "Gremlins", "y": 1984, "a": 0}, {"k": "F14", "it": "Guerre stellari", "en": "Star Wars", "y": 1977, "a": 0}, {"k": "F15", "it": "Hercules", "en": "Hercules", "y": 1997, "a": 1}, {"k": "F16", "it": "Hugo Cabret", "en": "Hugo", "y": 2011, "a": 0}, {"k": "F17", "it": "I Goonies", "en": "The Goonies", "y": 1985, "a": 0}, {"k": "F18", "it": "Il gigante di ferro", "en": "The Iron Giant", "y": 1999, "a": 1}, {"k": "F19", "it": "Il labirinto del fauno", "en": "Pan's Labyrinth", "y": 2006, "a": 0}, {"k": "F20", "it": "Il pianeta del tesoro", "en": "Treasure Planet", "y": 2002, "a": 1}, {"k": "F21", "it": "Il re leone", "en": "The Lion King", "y": 1994, "a": 1}, {"k": "F22", "it": "Inside Out", "en": "Inside Out", "y": 2015, "a": 1}, {"k": "F23", "it": "Jumanji", "en": "Jumanji", "y": 1995, "a": 0}, {"k": "F24", "it": "La famiglia Addams", "en": "The Addams Family", "y": 1991, "a": 0}, {"k": "F25", "it": "La mummia", "en": "The Mummy", "y": 1999, "a": 0}, {"k": "F26", "it": "La sirenetta", "en": "The Little Mermaid", "y": 1989, "a": 1}, {"k": "F27", "it": "La storia fantastica", "en": "The Princess Bride", "y": 1987, "a": 0}, {"k": "F28", "it": "Ladyhawke", "en": "Ladyhawke", "y": 1985, "a": 0}, {"k": "F29", "it": "Le avventure del barone di Munchausen", "en": "The Adventures of Baron Munchausen", "y": 1988, "a": 0}, {"k": "F30", "it": "Luca", "en": "Luca", "y": 2021, "a": 1}, {"k": "F31", "it": "Maleficent", "en": "Maleficent", "y": 2014, "a": 0}, {"k": "F32", "it": "Matilda 6 mitica", "en": "Matilda", "y": 1996, "a": 0}, {"k": "F33", "it": "Monsters & Co.", "en": "Monsters, Inc.", "y": 2001, "a": 1}, {"k": "F34", "it": "Monty Python e il Sacro Graal", "en": "Monty Python and the Holy Grail", "y": 1975, "a": 0}, {"k": "F35", "it": "Mulan", "en": "Mulan", "y": 1998, "a": 1}, {"k": "F36", "it": "Nightmare Before Christmas", "en": "The Nightmare Before Christmas", "y": 1993, "a": 1}, {"k": "F37", "it": "Parnassus – L'uomo che voleva ingannare il diavolo", "en": "The Imaginarium of Doctor Parnassus", "y": 2009, "a": 0}, {"k": "F38", "it": "Pinocchio di Guillermo del Toro", "en": "Guillermo del Toro's Pinocchio", "y": 2022, "a": 1}, {"k": "F39", "it": "Pinocchio di Roberto Benigni", "en": "Pinocchio (Roberto Benigni)", "y": 2002, "a": 0}, {"k": "F40", "it": "Pocahontas", "en": "Pocahontas", "y": 1995, "a": 1}, {"k": "F41", "it": "Pom Poko", "en": "Pom Poko", "y": 1994, "a": 1}, {"k": "F42", "it": "Rapunzel – L'intreccio della torre", "en": "Tangled", "y": 2010, "a": 1}, {"k": "F43", "it": "Ritorno a Oz (Nel fantastico mondo di Oz)", "en": "Return to Oz", "y": 1985, "a": 0}, {"k": "F44", "it": "Shrek", "en": "Shrek", "y": 2001, "a": 1}, {"k": "F45", "it": "Suzume", "en": "Suzume", "y": 2022, "a": 1}, {"k": "F46", "it": "The Fall", "en": "The Fall", "y": 2006, "a": 0}, {"k": "F47", "it": "Tremila anni di attesa", "en": "Three Thousand Years of Longing", "y": 2022, "a": 0}, {"k": "F48", "it": "WALL•E", "en": "WALL-E", "y": 2008, "a": 1}, {"k": "F49", "it": "Willow", "en": "Willow", "y": 1988, "a": 0}, {"k": "F50", "it": "Your Name.", "en": "Your Name.", "y": 2016, "a": 1}];
+const VERDETTI = [["si","Sì"],["no","No"],["confine","Caso di confine"],["non_visto","Non l'ho visto"]];
+const MOTIVI = [["C1","C1 Mondo realistico"],["C2","C2 Aspetto moderno o fantascientifico"],["C3","C3 Tono non sincero"],["C4","C4 Meraviglia non come fine"]];
+const CRITERI = [
+ ["C1 Un mondo altro","Il film si svolge in un mondo che non è il nostro: un mondo inventato o un regno leggendario, fuori dalla storia riconoscibile; oppure un altrove intorno a cui ruota il racconto, in cui si entra, come Narnia attraverso l'armadio, o nascosto dentro il nostro e abitato da creature non umane della tradizione religiosa o popolare, anche reinventate (spiriti, kami, yōkai, djinn, mostri leggendari); oppure il nostro mondo, quando il meraviglioso lo invade sotto gli occhi di tutti e la storia diventa la missione per riportarlo alla normalità."],
+ ["C2 Un meraviglioso arcaico o naturale","Il meraviglioso ha un aspetto arcaico, fiabesco o naturale. Il film è escluso se ha un ruolo centrale una tecnologia dall'aspetto moderno o futuristico (astronavi, robot, armi laser o moderne, macchine elettroniche), anche quando il mondo è naturale e la struttura è quella del fantasy. Sono ammesse le tecnologie dall'aspetto arcaico: vela, vapore, ingranaggi, eliche."],
+ ["C3 Tono sincero","Il film crede nel proprio mondo e lo rende desiderabile. È escluso se la parodia lo smonta, cioè se l'ironia deride continuamente la meraviglia e chiede di non prendere sul serio il mondo e i suoi pericoli; oppure se l'orrore lo domina, cioè se l'emozione prevalente, nel complesso, è la paura o l'angoscia. La comicità e le scene spaventose, anche forti, sono ammesse finché il film prende sul serio il suo mondo e il pericolo resta al servizio della meraviglia."],
+ ["C4 La meraviglia come fine","Il mondo meraviglioso vale per sé stesso. Il film è escluso se il meraviglioso è lo strumento di un'altra storia (un amore, un'amicizia, una famiglia, una vendetta) o l'allegoria di altro (un'idea, un messaggio, un processo psicologico). Che un film si presti a letture simboliche non basta a escluderlo: conta se è il film stesso a usare il suo mondo per dire altro."]];
+const ESEMPI = [["C1, mondo inventato","Eragon","Mary Poppins"],["C1, altrove in cui si entra","Alice nel paese delle meraviglie (1951)","Pomi d'ottone e manici di scopa"],["C1, creature della tradizione","Il mio vicino Totoro",""],["C2","Il castello errante di Howl","Dune"],["C3, comicità","La spada nella roccia","Le follie dell'imperatore"],["C3, paura","Dark Crystal","Coraline"],["C4, allegoria","Principessa Mononoke","Soul"],["C4, strumento","La città incantata","La forma dell'acqua"]];
+const CHIAVE = "fantastico_criteri_v2_inviato";
+const app = document.getElementById("app");
+const S = {inizio:0, nome:"", v:{}, mot:{}, nota:"", ord:[], i:0, blocco:false, invio:false};
+
+function h(tag, props, ...kids){
+  const e = document.createElement(tag);
+  for (const [k,v] of Object.entries(props || {})){
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (v === true) e.setAttribute(k, "");
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat(Infinity)){ if (c == null || c === false) continue; e.append(c.nodeType ? c : document.createTextNode(c)); }
+  return e;
+}
+function mescola(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function vai(nodo){ S.blocco = false; nodo.classList.add("scheda"); app.replaceChildren(nodo); window.scrollTo(0,0);
+  const t = app.querySelector("h2"); if (t){ t.setAttribute("tabindex","-1"); t.focus({preventScroll:true}); } }
+function giaInviato(){ try { return localStorage.getItem(CHIAVE) === "1"; } catch(e){ return false; } }
+function lento(){ return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+function scegli(btn, azione){
+  if (S.blocco) return; S.blocco = true;
+  btn.parentElement.querySelectorAll(".scelta").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+  setTimeout(azione, lento() ? 0 : 180);
+}
+function criteriEl(conEsempi){
+  return h("div", {class:"criteri"},
+    h("p", {}, "Un film è fantasy cinematografico positivo se soddisfa tutti e quattro questi criteri:"),
+    h("dl", {}, CRITERI.map(c => [h("dt", {}, c[0]), h("dd", {}, c[1])])),
+    conEsempi ? h("table", {class:"esempi"}, h("tr", {}, h("th", {}, "Esempi"), h("th", {}, "Dentro"), h("th", {}, "Fuori")),
+      ESEMPI.map(e => h("tr", {}, h("td", {}, e[0]), h("td", {}, e[1]), h("td", {}, e[2] || "–")))) : null);
+}
+function intro(){
+  if (giaInviato()) return vai(h("section", {}, h("h2", {}, "Hai già risposto"), h("p", {}, "Risulta che hai già inviato le risposte da questo dispositivo. Grazie!")));
+  const nome = h("input", {type:"text", id:"nome", maxlength:"60", autocomplete:"off"});
+  nome.addEventListener("input", () => { S.nome = nome.value; });
+  vai(h("section", {},
+    h("h2", {}, "Prima di cominciare"),
+    h("p", {}, "Ti mostrerò 50 film, uno alla volta, da valutare applicando quattro criteri che descrivono un filone del cinema fantastico. Ci vogliono circa venti minuti."),
+    h("p", {}, "Un film va valutato «Sì» solo se soddisfa tutti e quattro i criteri. Se ne manca anche uno, è «No»; se un criterio è soddisfatto solo in parte, è «Caso di confine». In questi due casi ti chiederò quale criterio più di tutti lo tiene fuori."),
+    h("p", {}, "Applica i criteri così come sono scritti, anche quando il tuo gusto direbbe altro: non conta se il film ti piace, né se è un bel film. Per i film che non ricordi abbastanza, scegli «Non l'ho visto». Se hai partecipato alla prova precedente, i criteri sono cambiati: parti solo da questi."),
+    h("p", {}, h("label", {for:"nome"}, "Il tuo nome o una sigla (facoltativo)")), nome,
+    h("div", {class:"azioni"}, h("button", {class:"primario", type:"button", onclick:() => { S.inizio = Date.now(); S.ord = mescola(FILM.map((_, i) => i)); paginaCriteri(); }}, "Avanti"))));
+}
+function paginaCriteri(){
+  vai(h("section", {}, h("h2", {}, "I criteri"), criteriEl(true),
+    h("p", {class:"piccolo"}, "Potrai rileggere i criteri in ogni momento, sotto ogni film."),
+    h("div", {class:"azioni"}, h("button", {class:"primario", type:"button", onclick:() => { S.i = 0; carta(); }}, "Ho letto i criteri, comincia"))));
+}
+function carta(passo){
+  const t = S.ord.length;
+  if (S.i >= t) return finale();
+  const i = S.ord[S.i], f = FILM[i], motivo = passo === "motivo";
+  const etichetta = c => (VERDETTI.find(v => v[0] === c) || ["",""])[1];
+  const area = motivo
+    ? [h("p", {class:"domanda"}, "Che cosa lo esclude?"),
+       h("div", {class:"bottoni"}, MOTIVI.map(m => h("button", {type:"button", class:"scelta", "aria-pressed": S.mot[i] === m[0] ? "true" : "false",
+         onclick:e => { S.mot[i] = m[0]; scegli(e.currentTarget, () => { S.i++; carta(); }); }}, m[1])))]
+    : h("div", {class:"bottoni"}, VERDETTI.map(v => h("button", {type:"button", class:"scelta", "aria-pressed": S.v[i] === v[0] ? "true" : "false",
+         onclick:e => { S.v[i] = v[0]; if (v[0] === "si" || v[0] === "non_visto") delete S.mot[i];
+           scegli(e.currentTarget, () => { if (v[0] === "no" || v[0] === "confine") carta("motivo"); else { S.i++; carta(); } }); }}, v[1])));
+  const indietro = motivo
+    ? h("button", {type:"button", class:"link", onclick:() => carta()}, "Cambia verdetto")
+    : (S.i > 0 ? h("button", {type:"button", class:"link", onclick:() => { S.i--; carta(); }}, "Indietro") : h("span", {}));
+  vai(h("section", {},
+    h("div", {class:"avanzamento"}, h("span", {}, "Valutazione"), h("span", {}, "Film " + (S.i + 1) + " di " + t),
+      h("span", {class:"barra"}, h("span", {class:"barra-piena", style:"width:" + (100 * S.i / t) + "%"}))),
+    h("div", {class:"porta"}, h("h2", {class:"titolo-film"}, f.it), h("p", {class:"meta"}, f.y + ", " + (f.a ? "animazione" : "live action")),
+      motivo ? h("p", {class:"verdetto"}, "Il tuo verdetto: " + etichetta(S.v[i])) : null),
+    area,
+    h("div", {class:"sotto"}, indietro, h("details", {}, h("summary", {}, "Rivedi i criteri"), criteriEl(true)))));
+}
+let btnInvia, errore;
+function finale(){
+  const nota = h("textarea", {id:"nota", maxlength:"2000"});
+  nota.value = S.nota; nota.addEventListener("input", () => { S.nota = nota.value; });
+  errore = h("p", {class:"errore", role:"alert"});
+  btnInvia = h("button", {class:"primario", type:"button", onclick:invia}, "Invia le risposte");
+  vai(h("section", {}, h("h2", {}, "Ultimo passo"),
+    h("p", {}, h("label", {for:"nota"}, "Se vuoi, lascia un commento: criteri poco chiari, film difficili, dubbi.")), nota,
+    h("div", {class:"azioni"}, h("button", {type:"button", class:"secondario", onclick:() => { S.i = S.ord.length - 1; carta(); }}, "Torna all'ultimo film"), btnInvia),
+    errore));
+}
+function invia(){
+  if (S.invio) return;
+  const risposte = FILM.map((f, i) => ({k:f.k, titolo:f.it, anno:f.y, formato:f.a ? "animazione" : "live action",
+    verdetto:S.v[i] || "", motivo:S.mot[i] || "", pos:S.ord.indexOf(i) + 1}));
+  const dati = {nome:S.nome.trim(), risposte:risposte, nota:S.nota, durata:Math.round((Date.now() - S.inizio) / 1000)};
+  if (!URL_SCRIPT) return grazie(true);
+  S.invio = true; btnInvia.disabled = true; btnInvia.textContent = "Invio in corso"; errore.textContent = "";
+  fetch(URL_SCRIPT, {method:"POST", body:JSON.stringify(dati), credentials:"omit"})
+    .then(res => res.text().then(testo => {
+      let ok = false;
+      try { ok = res.ok && JSON.parse(testo).ok === true; } catch(e){}
+      if (!ok) throw new Error("invio");
+    }))
+    .then(() => { try { localStorage.setItem(CHIAVE, "1"); } catch(e){} grazie(false); })
+    .catch(() => { S.invio = false; btnInvia.disabled = false; btnInvia.textContent = "Invia le risposte";
+      errore.textContent = "Invio non riuscito. Controlla la connessione e premi di nuovo «Invia le risposte»: le tue risposte sono ancora qui."; });
+}
+function grazie(anteprima){
+  vai(h("section", {}, h("h2", {}, "Risposte inviate"), h("p", {}, "Grazie! Le tue risposte servono a capire se i criteri sono chiari e se portano persone diverse agli stessi verdetti."),
+    anteprima ? h("p", {class:"piccolo"}, "Questa è un'anteprima: le risposte non sono state salvate da nessuna parte.") : null));
+}
+intro();
+</script>
+</body>
+</html>
